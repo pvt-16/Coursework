@@ -1,0 +1,259 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\title{SCC 461 Coursework 0}
+\author{36071280}
+\date{10/10/2021}
+
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={SCC 461 Coursework 0},
+  pdfauthor={36071280},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\begin{document}
+\maketitle
+
+Q1. Write code for log(PCB) against age, reproducing the final plot
+containing both the equation line and the data points.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Task 1 {-} Reproducing the plot for age vs. log(PCB)}
+
+\NormalTok{ages }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\AttributeTok{from=}\DecValTok{0}\NormalTok{, }\AttributeTok{to=}\DecValTok{13}\NormalTok{, }\AttributeTok{by=}\FloatTok{0.1}\NormalTok{)}
+\NormalTok{a }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\FloatTok{2.3907}
+\NormalTok{b }\OtherTok{\textless{}{-}} \FloatTok{2.300}
+\NormalTok{l }\OtherTok{\textless{}{-}}\NormalTok{ a }\SpecialCharTok{+}\NormalTok{ b}\SpecialCharTok{*}\NormalTok{ages}\SpecialCharTok{\^{}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\DecValTok{3}\NormalTok{)}
+\NormalTok{trout.age }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{,}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{, }\DecValTok{7}\NormalTok{, }\DecValTok{7}\NormalTok{, }\DecValTok{8}\NormalTok{, }\DecValTok{8}\NormalTok{,}
+               \DecValTok{8}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{11}\NormalTok{, }\DecValTok{12}\NormalTok{, }\DecValTok{12}\NormalTok{, }\DecValTok{12}\NormalTok{)}
+\NormalTok{trout.pcb }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.6}\NormalTok{ , }\FloatTok{1.6}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{1.2}\NormalTok{, }\FloatTok{2.0}\NormalTok{, }\FloatTok{1.3}\NormalTok{, }\FloatTok{2.5}\NormalTok{,}\FloatTok{2.2}\NormalTok{, }\FloatTok{2.4}\NormalTok{, }\FloatTok{1.2}\NormalTok{, }\FloatTok{3.5}\NormalTok{, }\FloatTok{4.1}\NormalTok{, }\FloatTok{5.1}\NormalTok{, }\FloatTok{5.7}\NormalTok{,}
+               \FloatTok{3.4}\NormalTok{, }\FloatTok{9.7}\NormalTok{, }\FloatTok{8.6}\NormalTok{, }\FloatTok{4.0}\NormalTok{, }\FloatTok{5.5}\NormalTok{, }\FloatTok{10.5}\NormalTok{, }\FloatTok{17.5}\NormalTok{,}\FloatTok{13.4}\NormalTok{, }\FloatTok{4.5}\NormalTok{, }\FloatTok{30.4}\NormalTok{, }\FloatTok{12.4}\NormalTok{, }\FloatTok{13.4}\NormalTok{, }\FloatTok{26.2}\NormalTok{, }\FloatTok{7.4}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(}\AttributeTok{x=}\NormalTok{trout.age, }\AttributeTok{y=}\FunctionTok{log}\NormalTok{(trout.pcb), }\AttributeTok{main=}\StringTok{"Log(PCB) vs Age"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"Age {-}\textgreater{}"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Log(PCB) {-}\textgreater{}"}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(}\AttributeTok{x=}\NormalTok{ages, }\AttributeTok{y=}\NormalTok{l, }\AttributeTok{type=}\StringTok{"l"}\NormalTok{, }\AttributeTok{col=}\StringTok{"blue"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{SCC-461-Coursework-0_files/figure-latex/unnamed-chunk-1-1.pdf}
+
+Q2. Rewrite the log(PCB) equation as a function which has arguments; a,
+b, and age, and returns the predicted log(PCB).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Task 2 {-} Rewrite log(PCB) as a function}
+
+\NormalTok{calc\_PCB }\OtherTok{=} \ControlFlowTok{function}\NormalTok{(a, b, age) \{}
+\NormalTok{  predicted\_l }\OtherTok{\textless{}{-}}\NormalTok{ a }\SpecialCharTok{+}\NormalTok{ b}\SpecialCharTok{*}\NormalTok{age}\SpecialCharTok{\^{}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\DecValTok{3}\NormalTok{)}
+  \FunctionTok{return}\NormalTok{ (predicted\_l)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Q3. By extending the range of age considered, produce a plot which shows
+the curve for the expected log(PCB) concentration for lake trout up to
+20 years old.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Task 3 {-} Extend ages to 20 years}
+
+\NormalTok{ages\_20 }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\AttributeTok{from=}\DecValTok{0}\NormalTok{, }\AttributeTok{to=}\DecValTok{20}\NormalTok{, }\AttributeTok{by=}\FloatTok{0.1}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(}\AttributeTok{x=}\NormalTok{ages\_20, }\AttributeTok{y=}\FunctionTok{calc\_PCB}\NormalTok{(a,b,ages\_20), }\StringTok{"l"}\NormalTok{, }\AttributeTok{col=}\StringTok{"green"}\NormalTok{, }\AttributeTok{main=}\StringTok{"Log(PCB) vs Age for 20 years"}\NormalTok{, }
+     \AttributeTok{xlab=}\StringTok{"Age {-}\textgreater{}"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Log(PCB) {-}\textgreater{}"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{SCC-461-Coursework-0_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+Q4. Now extract the maximum expected/predicted log(PCB) from the values
+used to draw the equation line
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Task 4 {-} Get Maximum}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(}\StringTok{"Maximum value is :"}\NormalTok{, }\FunctionTok{max}\NormalTok{(}\FunctionTok{calc\_PCB}\NormalTok{(a,b,ages\_20))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Maximum value is :3.85246051816828"
+\end{verbatim}
+
+Q5. It can be shown that a non-linear model of the form l = a + b ×
+age\^{}c where a, b, and c are constants provides a slightly better fit
+to the data. The optimal choices are a = -4.865, b = 4.7016, and c =
+0.1969.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Task 5 {-} Non{-}linear model}
+
+\NormalTok{a2 }\OtherTok{=} \SpecialCharTok{{-}}\FloatTok{4.865}
+\NormalTok{b2 }\OtherTok{=} \FloatTok{4.7016}
+\NormalTok{c2 }\OtherTok{=} \FloatTok{0.1969}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\tightlist
+\item
+  Rewrite the log(PCB) equation as a function which has arguments; a, b,
+  c and age, and returns the predicted log(PCB).
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Task 5.1 {-} Rewrite log equation function}
+
+\NormalTok{calc\_PCB2 }\OtherTok{=} \ControlFlowTok{function}\NormalTok{(a,b,c,age) \{}
+\NormalTok{  predicted\_l }\OtherTok{=}\NormalTok{ a }\SpecialCharTok{+}\NormalTok{ b }\SpecialCharTok{*}\NormalTok{ (age}\SpecialCharTok{\^{}}\NormalTok{c) }
+  \FunctionTok{return}\NormalTok{ (predicted\_l)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Compare the Bates-Watts estimator and the new estimator for the
+  expected log(PCB) concentration of a 10 year old lake trout.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Task 5.2 {-} Compare}
+
+\NormalTok{fixed\_age }\OtherTok{=} \DecValTok{10}
+\NormalTok{value\_BWEstimator }\OtherTok{=} \FunctionTok{calc\_PCB}\NormalTok{(a,b,fixed\_age)}
+\NormalTok{value\_newEstimator }\OtherTok{=} \FunctionTok{calc\_PCB2}\NormalTok{(a2,b2,c2,fixed\_age)}
+
+\NormalTok{value\_newEstimator }\SpecialCharTok{==}\NormalTok{ value\_BWEstimator}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Create a new plot which has both the old line and new line, allowing a
+  comparison of the differences.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Task 5.3 {-} Plot both equations}
+
+\FunctionTok{plot}\NormalTok{(}\AttributeTok{x=}\NormalTok{ages, }\AttributeTok{y=}\NormalTok{l, }\AttributeTok{type=}\StringTok{"l"}\NormalTok{, }\AttributeTok{col=}\StringTok{"red"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Log(PCB) {-}\textgreater{}"}\NormalTok{, }\AttributeTok{xlab =} \StringTok{"Ages {-}\textgreater{}"}\NormalTok{, }
+     \AttributeTok{main=}\StringTok{"Comparing Bates{-}Watts estimator and the new estimator"}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(ages, }\FunctionTok{calc\_PCB2}\NormalTok{(a2,b2,c2,ages), }\AttributeTok{type=}\StringTok{"l"}\NormalTok{, }\AttributeTok{col=}\StringTok{"orange"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{SCC-461-Coursework-0_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\end{document}

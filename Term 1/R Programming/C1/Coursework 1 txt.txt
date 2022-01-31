@@ -1,0 +1,106 @@
+---
+title: "Coursework 1"
+author: '36071280'
+date: "15/10/2021"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+
+## Leeds Accident data
+
+Q1. Read the data into R, check the names of the variables match those in the table, and print the dimensions
+of the data frame.
+
+```{r}
+
+library(dplyr)
+library(ggplot2)
+
+#Reading data fromCSV file
+accidentsData = read.csv("accidents2014.csv")
+
+#data.frame(accidentsData)
+
+#Check column names -no need to print
+#colnames(accidentsData)
+
+#Get dimensions of the dataframe
+dim(accidentsData)
+```
+
+Q2. Use select() to modify the data frame, dropping the following variables; Accident.Date, Time..24hr,
+Road.Surface, Lighting.Conditions, and Weather.Conditions and keeping the others.
+
+```{r}
+
+# Do it using column names and not strings
+accidentsData_select = select(accidentsData, -c("Accident.Date","Road.Surface",
+                                                "Lighting.Conditions", 
+                                                "Weather.Conditions", 
+                                                "Time..24hr."))
+
+#dim(accidentsData_select)
+```
+
+Q. Use filter() to modify the data frame, so that the accidents we are studying involve: a private car (vehicle
+category 9) and are not on a motorway (class of road category 1).
+Print the dimensions of your newly modified data frame.
+
+```{r}
+
+accidentsData_filtered = filter(accidentsData_select, 
+                                accidentsData_select$Type.of.Vehicle == 9, 
+                                accidentsData_select$X1st.Road.Class != 1)
+
+dim(accidentsData_filtered)
+
+```
+
+Q3.The centre of Leeds has Easting-Northing coordinates, 429967, 434260. Add a variable to the accident
+data frame using mutate() to give the distance of the accident from the centre of Leeds in metres.
+
+```{r}
+
+#Defining leeds centre coordinates
+x1 = 429967
+y1 = 434260
+
+#Defining function to calculate the distance from city centre
+calc_distance <- function (x1, x2, y1, y2) {
+  sqrt((x2-x1)^2 + (y2-y1)^2)
+}
+
+#Getting accidents data with distance column
+accidentsData_withDistance = mutate(accidentsData_filtered, 
+                                    Distance.From.Centre = calc_distance
+                                    (x1, accidentsData_filtered$Grid.Ref..Easting, 
+                                    y1, accidentsData_filtered$Grid.Ref..Northing))
+
+```
+
+Q. Using the modified data from question 2 and arrange() reorder the accidents in ascending order from the
+centre of Leeds and print out the bottom few rows from this data frame.
+
+```{r}
+accidentsData_orderedbyDistance = arrange(accidentsData_withDistance, 
+                                          accidentsData_withDistance$Distance.From.Centre)
+tail(accidentsData_orderedbyDistance)
+```
+
+
+Q4. Continuing with the data modified in questions 2 and 3, using ggplot(), create a histogram of age of
+casualties. Modify the binwidth into groups of 10 years. Set the axis labels to be “Casualty age” and
+“No. of casualties”.
+
+```{r} 
+# Creating histogram
+ggplot(accidentsData_orderedbyDistance, aes(Age.of.Casualty)) + 
+geom_histogram(binwidth = 10, color="yellow", 
+               position = "identity", fill="red") +
+  labs(title="Histogram for Age", x="Casualty age", y="No. of Casualities")
+```
+
+*****

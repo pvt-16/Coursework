@@ -1,0 +1,288 @@
+---
+title: "Coursework 3"
+author: '36071280'
+date: "02/11/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE,  message= FALSE}
+library(tidyverse)
+
+knitr::knit_hooks$set(timeit = local({
+  now = NULL
+  function(before, options) {
+    if (before) {
+      now <<- Sys.time()
+    } else {
+      res = difftime(Sys.time(), now)
+      now <<- NULL
+      # use options$label if you want the chunk label as well
+      paste('Time for this code chunk:', as.character(res))
+    }
+  }})
+)
+```
+
+# Question 1
+Q1. Read in the data and print the dimensions of the Storm Events data frame
+
+```{r readdata, warning=FALSE}
+storm_events <- read.csv("Australia_severe_storms_1975-2015.csv")
+print(dim(storm_events))
+
+```
+
+# Question 2
+Q2. Clean the data by removing the variable ID and also Waterspout events from the database. Print
+the dimensions of the cleaned data frame. Also print the first few rows without the 6 columns
+of comments, without creating an intermediate data frame.
+
+```{r cleandata}
+
+# Removing variable ID and Waterspout event
+storm_events_clean <- storm_events %>% select(-(ID)) %>% 
+  filter(storm_events$Database != "Waterspout")
+print(dim(storm_events_clean))
+```
+
+# Question 3
+Q3. Add a column to your data frame containing the time zone of each event using the following OlsonNames() classifications. 
+
+```{r Declaring Australian timezones and varibles}
+
+#declaring variables for timezone mapping
+
+list_of_relevant_australian_tz <- c("QLD" = "Australia/Queensland",
+                                    "NSW" = "Australia/NSW",
+                            "NSW_BrokenHill" = "Australia/Broken_Hill",
+                            "VIC" = "Australia/Victoria",
+                            "SA"="Australia/South",
+                            "WA" = "Australia/West",
+                            "TAS"= "Australia/Tasmania",
+                            "NT" = "Australia/North",
+                            "ACT" = "Australia/ACT")
+
+new_south_wales = "NSW"
+aus_central_time = "ACT"
+broken_hill = "NSW_BrokenHill"
+broken_hill_expr = "broken hill"
+```
+
+```{r Timezone allocation function}
+
+allocate_tz <-function(state, nearest_town) {
+  
+  if (length(state) && !is.na(state))
+  {
+    if (state != new_south_wales)
+    return (list_of_relevant_australian_tz[state])
+    else if (state == new_south_wales)
+    {
+    
+    if (length(nearest_town) && !is.na(nearest_town) && str_detect(tolower(nearest_town), broken_hill_expr))
+      return (list_of_relevant_australian_tz[broken_hill])
+    else
+      return (list_of_relevant_australian_tz[new_south_wales])
+    }
+  }
+  return (list_of_relevant_australian_tz[aus_central_time])
+}
+```
+
+```{r Allocating correct timezone, time_it = TRUE}
+storm_events_tz <- storm_events_clean %>% mutate(AustralianTimeZone = NA)
+
+for ( i in 1:nrow(storm_events_clean))
+{
+  storm_events_tz$AustralianTimeZone[i] <- allocate_tz(storm_events_clean$State[i], storm_events_clean$`Nearest town`[i])
+}
+
+# storm_events_tz2 <- storm_events_clean %>% mutate(AustralianTimeZone = NA)  
+# storm_events_tz2$AustralianTimeZone <- sapply(storm_events_tz2$AustralianTimeZone,
+#                                               FUN = allocate_tz(storm_events_tz2, nearest_town = storm_events_tz2$Nearest.town))
+
+```
+
+# Question 4
+Q4. Parse the date, time and time zones from the necessary columns to create a new variable in the data
+frame which converts the time into UTC. You may need the function lubridate::as_datetime()
+and/or the use of loops. Print the first few rows of the resultant data frame, without the 6 columns
+of comments, again without creating an intermediate data frame.
+
+```{r UTCdate}
+library(lubridate)
+
+storm_events_utc = data.frame()
+for ( s in  list_of_relevant_australian_tz)
+{
+  storm_events_utc <- rbind(storm_events_utc, storm_events_tz %>% 
+                              filter(storm_events_tz$AustralianTimeZone == s) %>%
+                              mutate(UTCDateTime = (Date.Time %>% dmy_hm(tz = s) 
+                                                    %>%  as_datetime())))
+}
+
+storm_events_utc %>% arrange(storm_events_utc$Event.ID)
+```
+
+
+```{r UTCdate For loop, eval =FALSE}
+
+storm_events_utc2 <- storm_events_tz %>% mutate(UTCDateTime = NA)
+
+for ( j in 1: nrow(storm_events_utc2)) {
+  storm_events_utc2$UTCDateTime[j] <- (dmy_hm(storm_events_utc2$Date.Time[j], tz=storm_events_utc2$AustralianTimeZone[j]))
+}
+storm_events_utc2$UTCDateTime <- storm_events_utc2$UTCDateTime %>% as_datetime()
+
+#comment_columns = c(...10,...11, ...12,...13, ...14, Comments)
+# filter all the tz by the name,
+# mass apply dmy_hm  -> loop should be 1:10
+#head(storm_events_utc2 %>% select(-))
+```
+
+
+#Q5. 5. Create new variables for the month and year of each event. Print the first few rows of the resultant data frame, without the 6 columns of comments and without creating an intermediate data frame.
+
+```{r months and years}
+
+storm_events_with_cols = storm_events_utc %>% mutate(month_storm = month(storm_events_utc$UTCDateTime), 
+                                                     year_storm = year(storm_events_utc$UTCDateTime))
+
+#...10,...11, ...12,...13, ...14, Comments
+print(storm_events_with_cols[-c(8:13)])
+```
+
+# Q6. After discarding Waterspout events there are five types of events left in the data; Rain, Hail, Lighting, Wind, and Tornado.
+
+##i) Create a new data frame which contains the total number of counts for each of the above type of events for each of the twelve months over the forty year period. 
+
+```{r}
+
+storm_cols_grouped = storm_events_with_cols %>% group_by(Database, month_storm)
+storm_counts_df = data.frame( count(storm_cols_grouped))
+```
+
+## ii)On a single plot, plot the total number of counts of each event against month. Use the R object month.abb for the labels of the months in the plot.
+
+```{r plotting}
+storm_counts_df$month_storm <- factor(storm_counts_df$month_storm, labels=month.abb)
+
+ggplot(storm_counts_df,aes(factor(Database), n, fill=month_storm )) + 
+  geom_bar(position="dodge2", stat="identity")
+
+#ggplot(storm_counts_df,aes(factor(Database), n, fill=month_storm )) + 
+ # geom_line()
+```
+
+
+# Q7. From the answer to Question 5, the 6 columns titled Comments, X, X.1, X.2, X.3, X.4 consist of comments.
+
+## i) Combine the comments from these columns into a single column, named All.comments.
+
+
+```{r}
+
+storm_events_with_cols[is.na(storm_events_with_cols)] <- ''
+storm_counts_all_comments <- storm_events_with_cols %>% mutate(AllComments = str_trim(paste(storm_events_with_cols$...10, storm_events_with_cols$...11,
+                                                                                   storm_events_with_cols$...12, storm_events_with_cols$...13,
+                                                                                   storm_events_with_cols$...14, storm_events_with_cols$Comments)))
+
+#glimpse(storm_counts_all_comments)
+```
+
+## ii) Select the following columns to keep for further analysis, Event.ID, Database, State, All.comments, and the year variable you created.
+
+```{r}
+#storm_counts_all_comments$`Event ID`
+#select(storm_counts_all_comments, storm_counts_all_comments$`Event ID`)
+storm_analysis <-  storm_counts_all_comments %>% select(c(Event.ID, Database, State, AllComments, year_storm))
+
+print(sapply(storm_analysis, class))
+```
+
+# Q8. Now we use the answer to Question 7(ii) for further analysis
+
+## i) Create an indicator variable which states whether or not a storm event has resulted in a flash flood. Make sure you sort out all terms relating to flash floods.
+
+```{r}
+flash_flood_expr <- "flash.*?flood*" # flash - any? -  flood 
+flash_flood_expr_space_mul <- "flash\\s*?flood*" # flash - space(s)? -  flood 
+flash_flood_expr_mul <- "flash(.|\\s*)?flood*" #final
+
+storm_analysis <- storm_analysis %>% mutate(flash_flood_present = str_detect(storm_analysis$AllComments,                                                                             regex(flash_flood_expr_mul, ignore_case = TRUE)))
+
+storm_analysis_with_floods <- storm_analysis %>% filter(flash_flood_present==TRUE)
+storm_analysis_grouped <- storm_analysis_with_floods %>% group_by(year_storm)
+
+dim(storm_analysis_grouped)
+
+```
+
+## ii) Print a plot of the number of flash floods per year from 1975-2015. You may need to first create a vector or data frame to contain the number of flash floods per year.
+
+```{r}
+
+flash_flood_counts <- count(storm_analysis_grouped)
+
+ggplot(flash_flood_counts) + geom_line(aes(year_storm, n))
+ggplot(flash_flood_counts,aes(year_storm, n)) + geom_bar(stat="identity")
+
+#View(flash_flood_counts)
+```
+
+
+# Q9. For severe wind events often the wind speed is given. The wind speed is given in knots or km/h.
+
+## i) Extract all wind speeds both those in knots and km/h. Hint: Knots can be abbreviated by kts or kt. Also note that wind speed can be a single, double or triple digit number
+
+```{r}
+wind_speed_expr <- "(\\d{1,3})\\s?(knot|kt(s)?|km\\s?\\/\\s?h(r)?)"
+
+storm_analysis_speeds <- str_extract_all(storm_analysis,regex(wind_speed_expr))
+
+storm_analysis_speeds <- storm_analysis %>% mutate(wind_speed = str_extract( storm_analysis$AllComments,wind_speed_expr))
+
+storm_analysis_speeds <- storm_analysis_speeds %>% filter(!is.na(wind_speed))
+
+#write.csv(storm_analysis_speeds, "storm_analysis_speeds.csv")
+```
+
+## ii) Convert km/h wind speeds to knots (1 knot = 1.852 km/h) rounding the wind/speed to the nearest knot. Hint: It is helpful to work with a reduced data frame which includes only those observations with a wind speed recorded.
+
+```{r}
+knot_to_kmh = 1.852
+wind_speed_expr_km <- "(\\d{1,3})\\s?(km\\s?\\/\\s?h(r)?)"
+extract_number_expr <- "\\d+"
+
+get_wind_value <- function (wind_speed) {
+  wind_numeric_value = as.numeric(str_extract(wind_speed, extract_number_expr))
+  if (str_detect(wind_speed, regex(wind_speed_expr_km, ignore_case = TRUE)))
+  {
+    return (as.integer(wind_numeric_value/knot_to_kmh))
+  }
+  else
+  {
+    return (wind_numeric_value)
+  }
+}
+```
+
+
+```{r}
+
+storm_analysis_speed_numbers <- storm_analysis_speeds %>% mutate(wind_values = NA)
+storm_analysis_speed_numbers$wind_values <- sapply(storm_analysis_speed_numbers$wind_speed, FUN = get_wind_value)
+
+#as.numeric(str_extract(storm_analysis_speeds$wind_speed[27], extract_number_expr))
+#storm_analysis_speed_numbers[1:15,]
+```
+
+## iii) Print a boxplot of the wind speeds recorded per state. 
+
+```{r}
+
+ggplot(storm_analysis_speed_numbers, aes(State, wind_values)) + geom_boxplot(position="dodge2")
+```
+

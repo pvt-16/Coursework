@@ -1,0 +1,106 @@
+---
+title: "SCC.461 Coursework 0"
+author: '36071280 Prabha Venkatesh T'
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+
+output:
+  pdf_document: default
+html_notebook: default
+html_document:
+  df_print: paged
+---
+  
+  Q1. Write code for log(PCB) against age, reproducing the final plot containing both the equation line and
+the data points.
+
+```{r}
+#Task 1 - Reproducing the plot for age vs. log(PCB)
+
+ages <- seq(from=0, to=13, by=0.1)
+a <- -2.3907
+b <- 2.300
+l <- a + b*ages^(1/3)
+trout.age <- c(1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4,4, 4, 5, 6, 6, 6, 7, 7, 7, 8, 8,
+               8, 9, 11, 12, 12, 12)
+trout.pcb <- c(0.6 , 1.6, 0.5, 1.2, 2.0, 1.3, 2.5,2.2, 2.4, 1.2, 3.5, 4.1, 5.1, 5.7,
+               3.4, 9.7, 8.6, 4.0, 5.5, 10.5, 17.5,13.4, 4.5, 30.4, 12.4, 13.4, 26.2, 7.4)
+plot(x=trout.age, y=log(trout.pcb), main="Log(PCB) vs Age", xlab = "Age ->", ylab = "Log(PCB) ->")
+lines(x=ages, y=l, type="l", col="blue")
+
+```
+
+Q2. Rewrite the log(PCB) equation as a function which has arguments; a, b, and age, and returns the
+predicted log(PCB).
+
+``` {r}
+#Task 2 - Rewrite log(PCB) as a function
+
+calc_PCB = function(a, b, age) {
+  predicted_l <- a + b*age^(1/3)
+  return (predicted_l)
+}
+#calc_PCB(a,b,ages)
+```
+
+Q3. By extending the range of age considered, produce a plot which shows the curve for the expected
+log(PCB) concentration for lake trout up to 20 years old.
+
+``` {r}
+#Task 3 - Extend ages to 20 years
+
+ages_20 <- seq(from=0, to=20, by=0.1)
+plot(x=ages_20, y=calc_PCB(a,b,ages_20), "l", col="green")
+```
+Q4. Now extract the maximum expected/predicted log(PCB) from the values used to draw the equation
+line
+
+``` {r}
+#Task 4 - Get Maximum
+
+#calc_PCB(a,b,ages_20)
+max(calc_PCB(a,b,ages_20))
+```
+Q5. It can be shown that a non-linear model of the form
+l = a + b × age^c
+where a, b, and c are constants provides a slightly better fit to the data. The optimal choices are a = -4.865, b = 4.7016, and c = 0.1969.
+
+(a) Rewrite the log(PCB) equation as a function which has arguments; a, b, c and age, and returns the
+predicted log(PCB).
+
+``` {r}
+#Task 5 - Non-linear model
+
+a2 = -4.865
+b2 = 4.7016
+c2 = 0.1969
+
+# Task 5.1 - Rewrite log equation function
+
+calc_PCB2 = function(a,b,c,age) {
+  predicted_l = a + b * (age^c) 
+  return (predicted_l)
+}
+
+```
+
+(b) Compare the Bates-Watts estimator and the new estimator for the expected log(PCB) concentration of
+a 10 year old lake trout.
+
+```{r}
+
+# Task 5.2 - Compare
+fixed_age = 10
+calc_PCB(a,b,fixed_age)
+calc_PCB2(a2,b2,c2,fixed_age)
+
+```
+
+(c) Create a new plot which has both the old line and new line, allowing a comparison of the differences. 
+
+
+```{r, tidy=TRUE}
+# Task 5.3 - Plot both equations
+plot(x=ages, y=l, type="l", col="red", ylab = "log(PCB)", main="Comparing Bates-Watts estimator and the new estimator")
+lines(ages, calc_PCB2(a2,b2,c2,ages), type="l", col="orange")
+
+```

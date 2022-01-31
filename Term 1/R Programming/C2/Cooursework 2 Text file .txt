@@ -1,0 +1,144 @@
+---
+title: "Coursework 2"
+author: '36071280'
+date: "23/10/2021"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+## Question 1
+
+Q1. We first implement the deterministic model:
+
+```{r}
+#Implement the deterministic model
+
+library(ggplot2)
+
+# Declaring common constants
+alpha = 0.05
+beta = 0.00012
+gamma = 0.04
+weeks = 103
+
+```
+• Set R1 = 60 and F1 = 30.
+
+```{r}
+
+### Setting initial values for Deterministic models
+
+R1 = 60
+F1 = 30
+```
+
+• Using existing functions in R, write the necessary for loop to implement the 
+Lotka-Volterra model that will allow you to project the number of foxes and 
+rabbits at the end of a 2-year period i.e. after 103 more weeks.
+
+```{r}
+
+# Implementing the deterministic model
+
+for ( w in 1:(weeks-1))
+{
+  R1[w+1] = R1[w] + alpha* R1[w] - beta*R1[w] *F1[w]
+  F1[w+1] = F1[w] + beta* R1[w]* F1[w] - gamma * F1[w]
+}
+
+```
+
+• Print the last few values of the final result of Rt and Ft. 
+```{r}
+tail(R1)
+tail(F1)
+
+```
+
+## Question 2
+
+Q2. A stochastic version of the Lotka-Volterra model exists in a similar manner 
+to the stochastic version of the population growth model. In this case, the 
+number of rabbits born is Binom(Rt, alpha), the number of rabbits eaten (new foxes) 
+is Binom(RtFt, beta), and the number of foxes that die is Binom(Ft, gamma).
+
+
+• Set the seed for running your code to 17540
+
+
+```{r}
+### Setting initial values for Stochastic models
+
+set.seed(17540)
+sto_R = 60
+sto_Fx = 30
+```
+
+• Using existing functions in R, write the necessary for loop to implement the 
+stochastic Lotka-Volterra model that will allow you to project the number of 
+foxes and rabbits at the end of a 2-year period i.e. after 103 more weeks, with 
+the same starting values as for the deterministic model.
+
+```{r}
+
+#Implementing the Stochastic model
+
+for ( w in 1:(weeks-1))
+{
+  no_of_foxes_eaten = rbinom(1,sto_R[w]*sto_Fx[w], beta)
+  sto_R[w+1] = sto_R[w] + rbinom(1,sto_R[w],alpha) - no_of_foxes_eaten
+  sto_Fx[w+1] = sto_Fx[w] + no_of_foxes_eaten - rbinom(1, sto_Fx[w],gamma)
+}
+
+```
+
+• Print the last few values of the final result of Rt and Ft
+
+```{r}
+tail(sto_R)
+tail(sto_Fx)
+```
+
+## Question 3
+
+Q3. Now we visualise the results:
+
+• Create a long data frame called LV with three variables; time, group and size.
+Each row should contain the size at a single time point for one of the four 
+groups generated rabbits and foxes (deterministic model); sto_rabbits and 
+sto_foxes (stochastic model).
+
+
+```{r}
+
+#Creating the new data frame
+
+group_names = c('Rabbits','Foxes','sto_Rabbits','sto_Foxes')
+LV = data.frame(time=rep(1:weeks,4), 
+                group=rep(group_names, each=weeks),
+                size=c(R1,F1, sto_R,sto_Fx))
+```
+
+• Using ggplot() visualise the changes over time for the number of rabbits and 
+foxes for both the deterministic and stochastic version of the Lotka-Volterra 
+model. All four lines should be in one single plot.
+
+
+```{r}
+
+# Visualizing changes
+
+# Deterministic model is shown in red. Stochastic model is shown in blue.
+# Foxes are shown as solid lines. Rabbits are shown as dashed lines.
+
+ggplot(LV) + geom_line(aes(time, size, color=group, linetype=group), size=0.5)+ 
+  scale_linetype_manual(values=c("solid","dashed","solid","dashed"))+
+  scale_color_manual(values=c(rep("red",2), rep("blue",2)))+
+  labs(x="Time in weeks ->", y="Population Size ->", 
+     title="Deterministic model vs Stochastic model")+
+  theme(legend.position = "bottom")
+```
+
+*****
