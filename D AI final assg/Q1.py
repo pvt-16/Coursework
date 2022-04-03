@@ -66,7 +66,8 @@ def bayesianNashEquilibria(rewardsB1, rewardsB2, rewardsB3, probs):
     nash_equi_list = []
     for cell in nash_cells_list:
         (r,c) = cell
-        nash_equi_list.append((str(r), ''.join([str(x) for x in list(attack_combinations[c])]) ))
+        col_val = ''.join([str(x) for x in list(attack_combinations[c])])
+        nash_equi_list.append((str(r), col_val))
     return nash_equi_list
 
 def pureStackelberg(rewardsB1, rewardsB2, rewardsB3, probs):
@@ -97,18 +98,21 @@ def pureStackelberg(rewardsB1, rewardsB2, rewardsB3, probs):
 
     # leader's chance to make a choice based on potential follower reward selections
     #highest_l_reward_position = (0,0)
-    #highest_leader_reward = rewards_normform[highest_l_reward_position[0]][highest_l_reward_position[1]][0]
-    
+    #     
     sorted_by_leader_reward = sorted(follower_strats, key=lambda tup: tup[1][0], reverse=True)
-
-    # for potential_strategy in follower_strats:
-    #     potential_reward = potential_strategy[1]
-    #     if potential_reward[0]> highest_leader_reward:  #potential_reward[0] = leader's reward
-    #         highest_leader_reward = potential_reward[0]
-    #         highest_l_reward_position = potential_strategy[0]
-    
+    # select the reward with highest value
+    # MODIFY TO HAVE MORE THAN ONE
     (r,c) = sorted_by_leader_reward[0][0]
     return [(str(r), ''.join([str(x) for x in list(attack_combinations[c])]) )]
+
+# rewardsB1 = [[(-1,1),(2,-2)],[(-3,4),(1,-1)]]
+# rewardsB2 = [[(5,-6),(-4,-5)],[(0,-1),(2,4)]]
+# rewardsB3 = [[(3,-3),(0,0)],[(1,2),(-2,1)]]
+# probs = [0.5,0.3,0.2]
+
+# print(set(bayesianNashEquilibria(rewardsB1, rewardsB2, rewardsB3, probs))==set([('1', '010')]))
+
+# print(set(pureStackelberg(rewardsB1, rewardsB2, rewardsB3, probs))==set([('1', '010')]))
 
 rewardsB1 = [[(-1,1),(2,-2)],[(-3,4),(1,-1)]]
 rewardsB2 = [[(5,-6),(-4,-5)],[(0,-1),(2,4)]]
@@ -116,5 +120,3 @@ rewardsB3 = [[(3,-3),(0,0)],[(1,2),(-2,1)]]
 probs = [0.5,0.3,0.2]
 
 print(set(bayesianNashEquilibria(rewardsB1, rewardsB2, rewardsB3, probs))==set([('1', '010')]))
-
-print(set(pureStackelberg(rewardsB1, rewardsB2, rewardsB3, probs))==set([('1', '010')]))
