@@ -1,4 +1,0 @@
-https://www.kaggle.com/phelpsmemo/cap-351-neurocomputacao-projeto4-autoencoder
-
-ar_database = np.load("./Kaggle/ar_database_stacked_128x128.npz")["stack"]
-
