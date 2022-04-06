@@ -8,9 +8,9 @@ t = range(n_strategies)
 attack_combinations = (sorted(set(product(t,repeat = n_attackers))))
 n_attack_combinations = len(attack_combinations)
 
-def nashEquilibria(rewards: List[list], forPure = False):
-    n_cols = n_attack_combinations
-    n_rows = 1 if forPure else n_strategies
+def nashEquilibria(rewards: List[list]):
+    n_cols = len(rewards[0]) 
+    n_rows = len(rewards) 
     cell_nash: bool = True
     nash_cells_list :List[tuple] = []
     for r in range(n_rows):
@@ -112,11 +112,30 @@ def pureStackelberg(rewardsB1, rewardsB2, rewardsB3, probs):
 
 # print(set(bayesianNashEquilibria(rewardsB1, rewardsB2, rewardsB3, probs))==set([('1', '010')]))
 
-# print(set(pureStackelberg(rewardsB1, rewardsB2, rewardsB3, probs))==set([('1', '010')]))
 
 rewardsB1 = [[(-1,1),(2,-2)],[(-3,4),(1,-1)]]
 rewardsB2 = [[(5,-6),(-4,-5)],[(0,-1),(2,4)]]
 rewardsB3 = [[(3,-3),(0,0)],[(1,2),(-2,1)]]
 probs = [0.5,0.3,0.2]
 
-print(set(bayesianNashEquilibria(rewardsB1, rewardsB2, rewardsB3, probs))==set([('1', '010')]))
+#print(set(bayesianNashEquilibria(rewardsB1, rewardsB2, rewardsB3, probs))==set([('1', '010')]))
+#print(set(pureStackelberg(rewardsB1, rewardsB2, rewardsB3, probs))==set([('1', '010')]))
+
+print("other:")
+rewards =   [[(0,1),(1,0)],
+            [(1,0),(0,1)]]
+comb_rewards = rewards            
+#print(nashEquilibria([rewards]))
+#print(pureStackelberg(rewards))
+
+rewards =   [[(5,5),(-1,6)],
+            [(6,-1),(0,0)]]
+comb_rewards = rewards            
+print(nashEquilibria(rewards))
+#print(pureStackelberg(rewards))
+
+rewards =   [[(50,50),(-1,6)],
+            [(6,-1),(0,0)]]
+comb_rewards = rewards
+#print(bayesianNashEquilibria(rewards))
+#print(pureStackelberg(rewards))
