@@ -2,10 +2,10 @@ import random
 
 epsilon = 0.001
 discountFactor = 0.95
-gridWorldCurrentUtilities = [[[0] * 4, [0] * 4], [[0] * 4, [0] * 4]] 
-rows = len(gridWorldCurrentUtilities[0])
-cols = len(gridWorldCurrentUtilities[0][0])
-coffeeStates = 2
+rows = 2
+cols = 4
+coffeeStates = 2    # without coffee = 0, with coffee = 1
+gridWorldCurrentUtilities = [[[0] * cols for x in range(rows)] for y in range(coffeeStates)] 
 numberStates = rows * cols * coffeeStates
 # CHANGE TO - North, South, East and West is 0, 1, 2, and 3,
 
@@ -70,6 +70,7 @@ def collectCoffee(goal: int, fire: int, movement: int):
         utilityPrime = movement
         differencesList = []
         for coffeeState in range(coffeeStates): #CoffeeStates = 0,1 =>0=no coffee, 1= has coffee
+            #We start with coffeeState = 0, since that is the initial state of the robot in the starting location
             for row in range(len(gridWorldCurrentUtilities[0])):
                 for col in range(len(gridWorldCurrentUtilities[0][0])):
                     position = (row, col)
@@ -136,13 +137,3 @@ def collectCoffee(goal: int, fire: int, movement: int):
         for col in range(cols):
             print(policies[1][row][col], end=" ")
         print("")
-
-# random.seed(0)
-# collectCoffee(1,-1,0)
-
-# No Coffee:
-# E . W . 
-# N N W W 
-# Coffee:
-# E S W . 
-# E E E .
