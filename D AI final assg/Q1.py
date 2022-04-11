@@ -75,7 +75,7 @@ def pureStackelberg(rewardsB1, rewardsB2, rewardsB3, probs):
     follower_strats = []
     for strategy in range(n_strategies):
         #each row is sent as a normal form game to get nash equilibria
-        nash_cells_list = nashEquilibria([rewards_normform[strategy]], forPure=1)
+        nash_cells_list = nashEquilibria([rewards_normform[strategy]])
         if len(nash_cells_list) != 0:
             lowest_reward_cell = nash_cells_list[0]
             
@@ -100,11 +100,17 @@ def pureStackelberg(rewardsB1, rewardsB2, rewardsB3, probs):
     #highest_l_reward_position = (0,0)
     #     
     sorted_by_leader_reward = sorted(follower_strats, key=lambda tup: tup[1][0], reverse=True)
-    # select the reward with highest value
-    # MODIFY TO HAVE MORE THAN ONE
-    (r,c) = sorted_by_leader_reward[0][0]
-    return [(str(r), ''.join([str(x) for x in list(attack_combinations[c])]) )]
+    # select the reward with highest value for leader
+    # MODIFIED TO HAVE MORE THAN ONE
+    maxReward = sorted_by_leader_reward[0][1][0]
+    filtered_by_leader_reward = list(filter(lambda f_reward: f_reward[1][0] == maxReward, sorted_by_leader_reward))
 
+    returnList=[]
+    for reward in filtered_by_leader_reward:
+        (r,c) = reward[0]
+        returnList.append((str(r), ''.join([str(x) for x in list(attack_combinations[c])]) ))
+    
+    return returnList
 # rewardsB1 = [[(-1,1),(2,-2)],[(-3,4),(1,-1)]]
 # rewardsB2 = [[(5,-6),(-4,-5)],[(0,-1),(2,4)]]
 # rewardsB3 = [[(3,-3),(0,0)],[(1,2),(-2,1)]]
@@ -118,24 +124,24 @@ rewardsB2 = [[(5,-6),(-4,-5)],[(0,-1),(2,4)]]
 rewardsB3 = [[(3,-3),(0,0)],[(1,2),(-2,1)]]
 probs = [0.5,0.3,0.2]
 
-#print(set(bayesianNashEquilibria(rewardsB1, rewardsB2, rewardsB3, probs))==set([('1', '010')]))
-#print(set(pureStackelberg(rewardsB1, rewardsB2, rewardsB3, probs))==set([('1', '010')]))
+print(set(bayesianNashEquilibria(rewardsB1, rewardsB2, rewardsB3, probs))==set([('1', '010')]))
+print(set(pureStackelberg(rewardsB1, rewardsB2, rewardsB3, probs))==set([('1', '010')]))
 
-print("other:")
-rewards =   [[(0,1),(1,0)],
-            [(1,0),(0,1)]]
-comb_rewards = rewards            
-#print(nashEquilibria([rewards]))
-#print(pureStackelberg(rewards))
+# print("other:")
+# rewards =   [[(0,1),(1,0)],
+#             [(1,0),(0,1)]]
+# comb_rewards = rewards            
+# #print(nashEquilibria([rewards]))
+# #print(pureStackelberg(rewards))
 
-rewards =   [[(5,5),(-1,6)],
-            [(6,-1),(0,0)]]
-comb_rewards = rewards            
-print(nashEquilibria(rewards))
-#print(pureStackelberg(rewards))
+# rewards =   [[(5,5),(-1,6)],
+#             [(6,-1),(0,0)]]
+# comb_rewards = rewards            
+# print(nashEquilibria(rewards))
+# #print(pureStackelberg(rewards))
 
-rewards =   [[(50,50),(-1,6)],
-            [(6,-1),(0,0)]]
-comb_rewards = rewards
-#print(bayesianNashEquilibria(rewards))
-#print(pureStackelberg(rewards))
+# rewards =   [[(50,50),(-1,6)],
+#             [(6,-1),(0,0)]]
+# comb_rewards = rewards
+# #print(bayesianNashEquilibria(rewards))
+# #print(pureStackelberg(rewards))

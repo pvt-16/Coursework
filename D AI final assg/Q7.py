@@ -51,17 +51,20 @@ class UCB1:
         return selectedMachineIndex
 
 random.seed(0)
-arms = [None] * 5
-# mu = [0.0001, 0.0000005, 0.000007, 0.0000008, 0.000001]
-# sigma = [0.00001, 0.00002, 0.000001, 0.000001, 0.000002]
 
-mu = [0.2, 0.5, 0.7, 0.8, 0.1]
-sigma = [0.1, 0.2, 0.1, 0.1, 0.2]
+arms = [None] * 5
+
+# mu = [0.2, 0.5, 0.7, 0.8, 0.1]
+# sigma = [0.1, 0.2, 0.1, 0.1, 0.2]
+
+mu = [0, 0, 0, 0, 0]
+sigma = [0, 0, 0, 0, 0]
 
 for a in range(len(arms)):
     arms[a] = Arm(mu[a], sigma[a])
-    print(arms[a])
 
 ucb = UCB1(arms)
+    
 for trials in range(100):
     print(ucb.play(),end="")
+    # ucb.play()
